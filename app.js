@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitButton = document.querySelector('#submitButton')
     const usname = document.querySelector('#UserName')
     const labelForName = document.querySelector('#labelForInput')
+    const PcShipsInfo = document.querySelector('#PcInfo')
+    const UserShipsInfo = document.querySelector('#yourInfo')
     const userSquares = []
     const computerSquares = []
     let isHorizontal = true
@@ -36,9 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let shotFired = -1
     let numOfPcShipsLeft = 0;
     let numOfUserShipsLeft = 0;
-  
-    console.log(userGrid)
-    // Select Player Mode
+ 
 
     submitButton.addEventListener('click', getInputValue);
     resetButton.addEventListener('click', resetGame);
@@ -53,9 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if(numOfPcShipsLeft === 10 && numOfUserShipsLeft === 10){
         rotateButton.disabled = true;
         startButton.disabled = false;
-
       }
-
     }
 
     // function resetGame(){
@@ -72,16 +70,52 @@ document.addEventListener('DOMContentLoaded', () => {
        for(var i=0; i<computerSquares.length; i++){
          computerSquares[i].className = 'square' ;
        }
-      // createBoard(userGrid, userSquares)
-      // createBoard(computerGrid, computerSquares)
+
       name = "";
       document.getElementById("yourName").innerHTML = name;
       usname.hidden = false;
       submitButton.hidden = false;
       labelForName.hidden = false;
-      displayGrid = document.querySelector('.grid-display')
-      startSinglePlayer()
+      rotateButton.disabled = false;
+      turnDisplay.innerHTML = "";
+      UserShipsInfo.innerHTML = "";
+      PcShipsInfo.innerHTML = "";
+      infoDisplay.innerHTML = "";
 
+      small1Count = 0
+      small2Count = 0
+      small3Count = 0
+      small4Count = 0
+      mid1Count = 0
+      mid2Count = 0
+      mid3Count = 0
+      big1Count = 0
+      big2Count = 0
+      hugeCount = 0
+
+      PCsmall1Count = 0
+      PCsmall2Count = 0
+      PCsmall3Count = 0
+      PCsmall4Count = 0
+      PCmid1Count = 0
+      PCmid2Count = 0
+      PCmid3Count = 0
+      PCbig1Count = 0
+      PCbig2Count = 0
+      PChugeCount = 0
+
+      if(!displayGrid.contains(huge)) displayGrid.appendChild(huge);
+      if(!displayGrid.contains(big2)) displayGrid.insertBefore(big2, huge);
+      if(!displayGrid.contains(big1)) displayGrid.insertBefore(big1, big2);
+      if(!displayGrid.contains(mid3)) displayGrid.insertBefore(mid3, big1);
+      if(!displayGrid.contains(mid2)) displayGrid.insertBefore(mid2, mid3);
+      if(!displayGrid.contains(mid1)) displayGrid.insertBefore(mid1, mid2);
+      if(!displayGrid.contains(small4)) displayGrid.insertBefore(small4, mid1);
+      if(!displayGrid.contains(small3)) displayGrid.insertBefore(small3, small4);
+      if(!displayGrid.contains(small2)) displayGrid.insertBefore(small2, small3);
+      if(!displayGrid.contains(small1)) displayGrid.insertBefore(small1, displayGrid.firstChild);
+
+      startSinglePlayer()
     }
 
     // Single Player
@@ -346,9 +380,6 @@ document.addEventListener('DOMContentLoaded', () => {
       shipFirstCoordinates = parseInt(this.dataset.id) - selectedShipIndex + 0;
       var locationValid = shipLocationVerification(selectedShipFromArray.directions[direction], shipFirstCoordinates, direction ,userSquares)
 
-
-
-      //shipLocationVerification()
         
    // if (isHorizontal && !newNotAllowedHorizontal.includes(shipLastId)) {
       if (isHorizontal && locationValid) {
@@ -356,9 +387,6 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i=0; i < draggedShipLength; i++) {
           userSquares[parseInt(this.dataset.id) - selectedShipIndex + i].classList.add('taken', shipClass)
         }
-      //As long as the index of the ship you are dragging is not in the newNotAllowedVertical array! This means that sometimes if you drag the ship by its
-      //index-1 , index-2 and so on, the ship will rebound back to the displayGrid.
-      // } else if (!isHorizontal && !newNotAllowedVertical.includes(shipLastId)) {
       } else if (!isHorizontal && locationValid) {
         numOfUserShipsLeft++;
         for (let i=0; i < draggedShipLength; i++) {
@@ -381,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
         startButton.disabled = false;
         rotateButton.disabled = true;
       }
-///https://forums.whirlpool.net.au/archive/1737034
+
       displayGrid.removeChild(draggedShip)
       if(!displayGrid.querySelector('.ship')) allShipsPlaced = true
     }
@@ -390,10 +418,10 @@ document.addEventListener('DOMContentLoaded', () => {
       // console.log('dragend')
     }
   
-    function playerReady(num) {
-      let player = `.p${parseInt(num) + 1}`
-      document.querySelector(`${player} .ready span`).classList.toggle('green')
-    }
+    // function playerReady(num) {
+    //   let player = `.p${parseInt(num) + 1}`
+    //   document.querySelector(`${player} .ready span`).classList.toggle('green')
+    // }
 
     let small1Count = 0
     let small2Count = 0
@@ -408,6 +436,8 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Game Logic for Single Player
     function startGame(){
+      UserShipsInfo.innerHTML = 'You have ' + numOfUserShipsLeft + ' ships'
+      PcShipsInfo.innerHTML = 'Computer has ' + numOfPcShipsLeft + ' ships'
       currentPlayer = 'user'
       playGameSingle();
     }
@@ -442,13 +472,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (obj.includes('taken')) {
         enemySquare.classList.add('boom')
+        infoDisplay.innerHTML = ``
         currentPlayer = 'user'
       } else {
         enemySquare.classList.add('miss')
+        infoDisplay.innerHTML = ``
         currentPlayer = 'enemy'
       }
       checkForWins()
-      
       if(gameMode === 'singlePlayer') playGameSingle()
     }
   
@@ -483,10 +514,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userSquares[square].classList.contains('taken')) {
           userSquares[square].classList.add('boom')
           currentPlayer = 'enemy'
+          infoDisplay.innerHTML = ``
           setTimeout(enemyGo, 1000)
         } else {
           userSquares[square].classList.add('miss')
           currentPlayer = 'user'
+          infoDisplay.innerHTML = ``
           turnDisplay.innerHTML = 'Your Go'
         }
 
@@ -501,6 +534,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (small1Count === 1 || small2Count === 1 || small3Count === 1 || small4Count === 1
        || mid1Count === 2 || mid2Count === 2 || mid3Count === 2 || big1Count === 3 || big2Count === 3 || hugeCount === 4) {
         infoDisplay.innerHTML = `You sunk the ${enemy}'s ship`
+        numOfPcShipsLeft--;
+        PcShipsInfo.innerHTML = 'Computer has ' + numOfPcShipsLeft + ' ships left'
         if(small1Count === 1) small1Count = 10
         if(small2Count === 1) small2Count = 10
         if(small3Count === 1) small3Count = 10
@@ -516,6 +551,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (PCsmall1Count === 1 || PCsmall2Count === 1 || PCsmall3Count === 1 || PCsmall4Count === 1
         || PCmid1Count === 2 || PCmid2Count === 2 || PCmid3Count === 2 || PCbig1Count === 3 || big2Count === 3 || PChugeCount === 4) {
           infoDisplay.innerHTML = `${enemy} sunk your ship`
+          numOfUserShipsLeft--;
+          UserShipsInfo.innerHTML = 'You have ' + numOfUserShipsLeft + ' ships left'
           if(PCsmall1Count === 1) PCsmall1Count = 10
           if(PCsmall2Count === 1) PCsmall2Count = 10
           if(PCsmall3Count === 1) PCsmall3Count = 10

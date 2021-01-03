@@ -136,11 +136,7 @@
     grid-template-rows: repeat(10, 4.6vmin);
     grid-template-columns: repeat(10, 4.6vmin);
   }
-  /* 
-  .grid-computer > .taken{
-    background-color: hsl(200, 100%, 50%) !important;
-    border-radius: 0 !important;
-  } */
+
   .grid-computer > .boom {  background-color:red !important;
     border-radius: 0 !important;}
   
