@@ -31,6 +31,7 @@
     height: 400px;
     margin: 20px;
     display: flex;
+    /*visibility: hidden;*/
   }
   
   .small1-container, .small2-container, .small3-container, .small4-container {
@@ -150,6 +151,6 @@
   .taken,
   .ship {
     position: relative;
-    background-color: #737373;
+    
   }
   

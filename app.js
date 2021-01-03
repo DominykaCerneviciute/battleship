@@ -15,40 +15,91 @@ document.addEventListener('DOMContentLoaded', () => {
     const huge = document.querySelector('.huge-container')
     const startButton = document.querySelector('#start')
     const rotateButton = document.querySelector('#rotate')
+    const resetButton = document.querySelector('#reset')
     const turnDisplay = document.querySelector('#whose-go')
     const infoDisplay = document.querySelector('#info')
+    const submitButton = document.querySelector('#submitButton')
+    const usname = document.querySelector('#UserName')
+    const labelForName = document.querySelector('#labelForInput')
     const userSquares = []
     const computerSquares = []
     let isHorizontal = true
     let isGameOver = false
-    let currentPlayer = 'user'
+    let currentPlayer = 'None'
     const width = 10
     let gameMode = ""
+    var name = "";
     let playerNum = 0
     let ready = false
     let enemyReady = false
     let allShipsPlaced = false
     let shotFired = -1
+    let numOfPcShipsLeft = 0;
+    let numOfUserShipsLeft = 0;
   
+    console.log(userGrid)
     // Select Player Mode
 
-  
+    submitButton.addEventListener('click', getInputValue);
+    resetButton.addEventListener('click', resetGame);
+
+    function getInputValue(){
+      name = document.getElementById("UserName").value; 
+      document.getElementById("UserName").value = "";
+      document.getElementById("yourName").innerHTML = name;
+        usname.hidden = true;
+        submitButton.hidden = true;
+        labelForName.hidden = true;
+      if(numOfPcShipsLeft === 10 && numOfUserShipsLeft === 10){
+        rotateButton.disabled = true;
+        startButton.disabled = false;
+
+      }
+
+    }
+
+    // function resetGame(){
+    //   location.reload();
+    // }
+
+ function resetGame(){
+      currentPlayer = 'None'
+      numOfPcShipsLeft = 0;
+      numOfUserShipsLeft = 0;
+      for(var i=0; i<userSquares.length; i++){
+        userSquares[i].className = 'square' ;
+       }
+       for(var i=0; i<computerSquares.length; i++){
+         computerSquares[i].className = 'square' ;
+       }
+      // createBoard(userGrid, userSquares)
+      // createBoard(computerGrid, computerSquares)
+      name = "";
+      document.getElementById("yourName").innerHTML = name;
+      usname.hidden = false;
+      submitButton.hidden = false;
+      labelForName.hidden = false;
+      displayGrid = document.querySelector('.grid-display')
+      startSinglePlayer()
+
+    }
+
     // Single Player
     function startSinglePlayer() {
       gameMode = "singlePlayer"
   
-      generate(shipArray[0])
-      generate(shipArray[1])
-      generate(shipArray[2])
-      generate(shipArray[3])
-      generate(shipArray[4])
-      generate(shipArray[5])
-      generate(shipArray[6])
-      generate(shipArray[7])
-      generate(shipArray[8])
       generate(shipArray[9])
+      generate(shipArray[8])
+      generate(shipArray[7])
+      generate(shipArray[6])
+      generate(shipArray[5])
+      generate(shipArray[4])
+      generate(shipArray[3])
+      generate(shipArray[2])
+      generate(shipArray[1])
+      generate(shipArray[0])
 
-      startButton.addEventListener('click', playGameSingle)
+      startButton.addEventListener('click', startGame)
     }
   
     //Create Board
@@ -69,29 +120,29 @@ document.addEventListener('DOMContentLoaded', () => {
       {
         name: 'small1',
         directions: [
-          [0, 1],
-          [0, 1]
+          [0],
+          [0]
         ]
       },
       {
         name: 'small2',
         directions: [
-          [0, 1],
-          [0, 1]
+          [0],
+          [0]
         ]
       },
       {
         name: 'small3',
         directions: [
-          [0, 1],
-          [0, 1]
+          [0],
+          [0]
         ]
       },
       {
         name: 'small4',
         directions: [
-          [0, 1],
-          [0, 1]
+          [0],
+          [0]
         ]
       },
       {
@@ -137,26 +188,77 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
       },
     ]
-  // ??????????????????????????????????????????????? 35min
+
     //Draw the computers ships in random locations
     function generate(ship) {
-      let randomDirection = Math.floor(Math.random() * ship.directions.length)
+       let randomDirection = Math.floor(Math.random() * ship.directions.length)
       let current = ship.directions[randomDirection]
       if (randomDirection === 0) direction = 1
       if (randomDirection === 1) direction = 10
       let randomStart = Math.abs(Math.floor(Math.random() * computerSquares.length - (ship.directions[0].length * direction)))
   
       const isTaken = current.some(index => computerSquares[randomStart + index].classList.contains('taken'))
-      //pakeisti
-      const isAtRightEdge = current.some(index => (randomStart + index) % width === width - 1)
-      const isAtLeftEdge = current.some(index => (randomStart + index) % width === 0)
-  
-      if (!isTaken && !isAtRightEdge && !isAtLeftEdge) current.forEach(index => computerSquares[randomStart + index].classList.add('taken', ship.name))
-  
+      var isGoodLocation = shipLocationVerification(current, randomStart, randomDirection, computerSquares)
+    
+      if (!isTaken && isGoodLocation){ current.forEach(index => computerSquares[randomStart + index].classList.add('taken', ship.name))
+      numOfPcShipsLeft++;
+    }
       else generate(ship)
+    
     }
     
+    function shipLocationVerification(ship,start, direction, squares){
+      var shipBeg = ship[0] + start;
+      var shipEnd = ship[ship.length - 1] + start
 
+      if(shipBeg > 99 | shipBeg < 0) return false // Iseina uz ribu
+      if(shipEnd > 99 | shipEnd < 0) return false // Iseina uz ribu
+
+      if(direction == 0){
+        var shipBeginning = Math.floor(shipBeg / 10);
+        var shipEnding = Math.floor(shipEnd / 10);
+        if(shipBeginning != shipEnding) return false;
+      }
+      
+      
+      for (let i = 0; i < ship.length; i++){
+
+        var coordinate = ship[i]
+
+        if(!shipCoordinateBlockVerification(start + coordinate - 10, squares, start)) return  false;
+        if(!shipCoordinateBlockVerification(start + coordinate + 10, squares, start)) return false;
+
+        if(!shipCoordinateBlockVerification(start + coordinate - 11, squares, start) 
+        && (((start + coordinate - 11) % 10) != 9)) return false;
+
+        if(!shipCoordinateBlockVerification(start + coordinate + 9, squares, start) 
+        && (((start + coordinate + 9) % 10) != 9)) return false;
+        
+        if(!shipCoordinateBlockVerification(start + coordinate - 1, squares, start) 
+        && (((start + coordinate - 1) % 10) != 9)) return false;
+
+
+        if(!shipCoordinateBlockVerification(start + coordinate + 11, squares, start) 
+        && (((start + coordinate + 11) % 10) != 0)) return false;
+      
+        if(!shipCoordinateBlockVerification(start + coordinate + 1, squares, start) 
+        && (((start + coordinate + 1) % 10) != 0)) return false;
+
+        if(!shipCoordinateBlockVerification(start + coordinate - 9, squares, start) 
+        && (((start + coordinate - 9) % 10) != 0)) return false;
+
+      }
+      return true;
+
+    }
+    function shipCoordinateBlockVerification(coordinates, squares, start)
+    {
+      if(coordinates < 0) return true;
+      if(coordinates > 99) return true;
+      if(squares[coordinates].classList.contains('taken'))return false;
+
+      return true
+    }
     //Rotate the ships
     function rotate() {
       small1.classList.toggle('small1-vertical')
@@ -191,6 +293,14 @@ document.addEventListener('DOMContentLoaded', () => {
     userSquares.forEach(square => square.addEventListener('dragleave', dragLeave))
     userSquares.forEach(square => square.addEventListener('drop', dragDrop))
     userSquares.forEach(square => square.addEventListener('dragend', dragEnd))
+
+    //For User Shooting
+    computerSquares.forEach(square => square.addEventListener('click', function(e) {
+      if(currentPlayer === 'user'){
+        shotFired = square.dataset.id
+        revealSquare(square.classList)
+      }
+    }))
   
     let selectedShipNameWithIndex
     let draggedShip
@@ -220,33 +330,58 @@ document.addEventListener('DOMContentLoaded', () => {
     function dragDrop() {
       let shipNameWithLastId = draggedShip.lastChild.id
       let shipClass = shipNameWithLastId.slice(0, -2)
-       console.log(shipClass)
       let lastShipIndex = parseInt(shipNameWithLastId.substr(-1))
       let shipLastId = lastShipIndex + parseInt(this.dataset.id)
-      // console.log(shipLastId)
-      const notAllowedHorizontal = [0,10,20,30,40,50,60,70,80,90,1,11,21,31,41,51,61,71,81,91,2,22,32,42,52,62,72,82,92,3,13,23,33,43,53,63,73,83,93]
-      const notAllowedVertical = [99,98,97,96,95,94,93,92,91,90,89,88,87,86,85,84,83,82,81,80,79,78,77,76,75,74,73,72,71,70,69,68,67,66,65,64,63,62,61,60]
-      
-      let newNotAllowedHorizontal = notAllowedHorizontal.splice(0, 10 * lastShipIndex)
-      let newNotAllowedVertical = notAllowedVertical.splice(0, 10 * lastShipIndex)
-  
+
       selectedShipIndex = parseInt(selectedShipNameWithIndex.substr(-1))
   
       shipLastId = shipLastId - selectedShipIndex
-       console.log(shipLastId)
-  
-      if (isHorizontal && !newNotAllowedHorizontal.includes(shipLastId)) {
+
+      var direction;
+      if (isHorizontal) direction = 0
+      else direction = 1
+
+      var selectedShipFromArray = shipArray.find( item => item.name == shipClass);
+      
+      shipFirstCoordinates = parseInt(this.dataset.id) - selectedShipIndex + 0;
+      var locationValid = shipLocationVerification(selectedShipFromArray.directions[direction], shipFirstCoordinates, direction ,userSquares)
+
+
+
+      //shipLocationVerification()
+        
+   // if (isHorizontal && !newNotAllowedHorizontal.includes(shipLastId)) {
+      if (isHorizontal && locationValid) {
+        numOfUserShipsLeft++;
         for (let i=0; i < draggedShipLength; i++) {
           userSquares[parseInt(this.dataset.id) - selectedShipIndex + i].classList.add('taken', shipClass)
         }
       //As long as the index of the ship you are dragging is not in the newNotAllowedVertical array! This means that sometimes if you drag the ship by its
       //index-1 , index-2 and so on, the ship will rebound back to the displayGrid.
-      } else if (!isHorizontal && !newNotAllowedVertical.includes(shipLastId)) {
+      // } else if (!isHorizontal && !newNotAllowedVertical.includes(shipLastId)) {
+      } else if (!isHorizontal && locationValid) {
+        numOfUserShipsLeft++;
         for (let i=0; i < draggedShipLength; i++) {
           userSquares[parseInt(this.dataset.id) - selectedShipIndex + width*i].classList.add('taken', shipClass)
         }
       } else return
-  
+      console.log(numOfUserShipsLeft)
+
+      if(numOfUserShipsLeft !== 10 && name === "") {
+        startButton.disabled = true;
+        rotateButton.disabled = false;
+      }
+
+      else if(numOfUserShipsLeft === 10 && name === ""){
+        startButton.disabled = true;
+        rotateButton.disabled = true;
+      }
+
+      else if(numOfUserShipsLeft === 10 && name !== ""){
+        startButton.disabled = false;
+        rotateButton.disabled = true;
+      }
+///https://forums.whirlpool.net.au/archive/1737034
       displayGrid.removeChild(draggedShip)
       if(!displayGrid.querySelector('.ship')) allShipsPlaced = true
     }
@@ -259,23 +394,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let player = `.p${parseInt(num) + 1}`
       document.querySelector(`${player} .ready span`).classList.toggle('green')
     }
-  
-    // Game Logic for Single Player
-    function playGameSingle() {
-      if (isGameOver) return
-      if (currentPlayer === 'user') {
-        turnDisplay.innerHTML = 'Your Go'
-        computerSquares.forEach(square => square.addEventListener('click', function(e) {
-          shotFired = square.dataset.id
-          revealSquare(square.classList)
-        }))
-      }
-      if (currentPlayer === 'enemy') {
-        turnDisplay.innerHTML = 'Computers Go'
-        setTimeout(enemyGo, 1000)
-      }
-    }
-  
+
     let small1Count = 0
     let small2Count = 0
     let small3Count = 0
@@ -287,6 +406,25 @@ document.addEventListener('DOMContentLoaded', () => {
     let big2Count = 0
     let hugeCount = 0
   
+    // Game Logic for Single Player
+    function startGame(){
+      currentPlayer = 'user'
+      playGameSingle();
+    }
+
+    function playGameSingle() {
+      startButton.disabled = true;
+      if (isGameOver) return  
+      if (currentPlayer === 'user') {
+        turnDisplay.innerHTML = 'Your Go'
+        turnDisplay.hidden = false;
+      }
+      if (currentPlayer === 'enemy') {
+        turnDisplay.innerHTML = 'Computers Go'
+        setTimeout(enemyGo, 1000)
+      }
+    }
+
     function revealSquare(classList) {
       const enemySquare = computerGrid.querySelector(`div[data-id='${shotFired}']`)
       const obj = Object.values(classList)
@@ -304,11 +442,13 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (obj.includes('taken')) {
         enemySquare.classList.add('boom')
+        currentPlayer = 'user'
       } else {
         enemySquare.classList.add('miss')
+        currentPlayer = 'enemy'
       }
       checkForWins()
-      currentPlayer = 'enemy'
+      
       if(gameMode === 'singlePlayer') playGameSingle()
     }
   
@@ -326,8 +466,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
     function enemyGo(square) {
       if (gameMode === 'singlePlayer') square = Math.floor(Math.random() * userSquares.length)
-      if (!userSquares[square].classList.contains('boom')) {
-        userSquares[square].classList.add('boom')
+      if (!userSquares[square].classList.contains('boom') && !userSquares[square].classList.contains('miss')) {
+        //userSquares[square].classList.add('boom')
+
         if (userSquares[square].classList.contains('small1')) PCsmall1Count++
         if (userSquares[square].classList.contains('small2')) PCsmall2Count++
         if (userSquares[square].classList.contains('small3')) PCsmall3Count++
@@ -338,10 +479,21 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userSquares[square].classList.contains('big1')) PCbig1Count++
         if (userSquares[square].classList.contains('big2')) PCbig2Count++
         if (userSquares[square].classList.contains('huge')) PChugeCount++
+
+        if (userSquares[square].classList.contains('taken')) {
+          userSquares[square].classList.add('boom')
+          currentPlayer = 'enemy'
+          setTimeout(enemyGo, 1000)
+        } else {
+          userSquares[square].classList.add('miss')
+          currentPlayer = 'user'
+          turnDisplay.innerHTML = 'Your Go'
+        }
+
         checkForWins()
+        //currentPlayer = 'enemy'
       } else if (gameMode === 'singlePlayer') enemyGo()
-      currentPlayer = 'user'
-      turnDisplay.innerHTML = 'Your Go'
+
     }
   
     function checkForWins() {
@@ -376,11 +528,6 @@ document.addEventListener('DOMContentLoaded', () => {
           if(PChugeCount === 4)  PChugeCount = 10
         }
 
-  console.log(destroyerCount)
-  console.log(submarineCount)
-  console.log(cruiserCount)
-  console.log(battleshipCount)
-  console.log(carrierCount)
       if ((small1Count + small2Count + small3Count + small4Count + mid1Count + mid2Count + mid3Count + big1Count + big2Count + hugeCount) === 100) {
         infoDisplay.innerHTML = "YOU WIN"
         gameOver()
@@ -393,7 +540,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
     function gameOver() {
       isGameOver = true
-      startButton.removeEventListener('click', playGameSingle)
+      currentPlayer = 'None'
+      startButton.removeEventListener('click', startGame)
+      
     }
     startSinglePlayer()
 })

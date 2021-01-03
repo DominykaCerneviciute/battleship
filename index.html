@@ -8,6 +8,15 @@
   </head>
   <body>
 
+    <div class="userName">
+      <label id ="labelForInput" for="UserName">Your name: </label>
+      <input type="text" id="UserName" name="userName">
+      <input type="submit" id="submitButton" value="Submit"/>
+    </form>
+    
+    <div id="yourName"></div>
+
+    </div>
   
     <div class="container">
         <div class="grid grid-user"></div>
@@ -15,9 +24,10 @@
     </div>
 
     <div class="hidden-info">
-      <button id="start">Start Game</button>
+      <button id="start" disabled="true">Start Game</button>
       <button id="rotate">Rotate Your Ships</button>
-      <h3 id="whose-go">Your Go</h3>
+      <button id="reset">Reset game</button>
+      <h3 id="whose-go" hidden = "true">Your Go</h3>
       <h3 id="info"></h3>
     </div>
 
