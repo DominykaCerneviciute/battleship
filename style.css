@@ -1,14 +1,22 @@
 .container {
   display: flex;
   }
+
+.bb{
+  display: flex;
+}
   
   .grid-user {
     width: 320px;
     height: 320px;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-right: 20px;
+    margin-bottom: 20px;
     display: flex;
     flex-wrap: wrap;
     background-color: #6699ff;
-    margin: 20px;
+
   }
   
   .grid div {
@@ -23,9 +31,31 @@
     flex-wrap: wrap;
     /* background-color: lightgreen; */
     background-color: #B3CCFF !important;
-    margin: 20px;
+    margin-top: 50px;
+    margin-left: 50px;
+    margin-right: 20px;
+    margin-bottom: 20px;
   }
-  
+  .grid-user-overlay{
+    width: 360px;
+    height: 350px; 
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+    /* top: 0;
+    left: 0; */
+    opacity: 0.8;  /* for demo purpose  */
+  }
+  .grid-computer-overlay{
+    width: 360px;
+    height: 350px; 
+    position: absolute;
+    display: flex;
+    flex-wrap: wrap;
+     /* top: 0; */
+    /* left: 395px; */
+    opacity: 0.8;  /* for demo purpose  */
+  }
   .grid-display {
     width: 400px;
     height: 400px;
@@ -77,6 +107,11 @@
     display: flex;
     flex-wrap: wrap;
   }
+
+  .stack-top{
+    z-index: -9;
+    margin: 20px; /* for demo purpose  */
+}
   
   .huge-container {
     width: 120px;
@@ -92,6 +127,8 @@
     display: flex;
     flex-wrap: wrap;
   }
+  
+
   
   
   .ship div {
@@ -142,6 +179,10 @@
   
   .square{
     border: 1px solid  black;
+  }
+  .square-overlay{
+    border: 1px solid transparent;
+    text-align: center;
   }
   
   .taken,

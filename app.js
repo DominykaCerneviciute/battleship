@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const userGrid = document.querySelector('.grid-user')
+    const userGridOverlay = document.querySelector('.grid-user-overlay')
+    const computerGridOverlay = document.querySelector('.grid-computer-overlay')
     const computerGrid = document.querySelector('.grid-computer')
     const displayGrid = document.querySelector('.grid-display')
     const ships = document.querySelectorAll('.ship')
@@ -24,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const PcShipsInfo = document.querySelector('#PcInfo')
     const UserShipsInfo = document.querySelector('#yourInfo')
     const userSquares = []
+    const userGridOverlaySquares = []
+    const computerGridOverlaySquares = []
     const computerSquares = []
     let isHorizontal = true
     let isGameOver = false
@@ -62,6 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
  function resetGame(){
       currentPlayer = 'None'
+      isGameOver = false;
       numOfPcShipsLeft = 0;
       numOfUserShipsLeft = 0;
       for(var i=0; i<userSquares.length; i++){
@@ -71,13 +76,15 @@ document.addEventListener('DOMContentLoaded', () => {
          computerSquares[i].className = 'square' ;
        }
 
+       
+
       name = "";
       document.getElementById("yourName").innerHTML = name;
       usname.hidden = false;
       submitButton.hidden = false;
       labelForName.hidden = false;
       rotateButton.disabled = false;
-      turnDisplay.innerHTML = "";
+      turnDisplay.hidden = true ;
       UserShipsInfo.innerHTML = "";
       PcShipsInfo.innerHTML = "";
       infoDisplay.innerHTML = "";
@@ -135,7 +142,60 @@ document.addEventListener('DOMContentLoaded', () => {
 
       startButton.addEventListener('click', startGame)
     }
-  
+
+    function createBoardDisplay(grid, squares) {
+      for (let i = 0; i < (width+1)*(width+1); i++) {
+        const square = document.createElement('div')
+        square.className = 'square-overlay'
+        square.dataset.id = i
+        grid.appendChild(square)
+        squares.push(square)
+      }
+      var textA = document.createTextNode ('A');
+      var textB = document.createTextNode ('B');
+      var textC = document.createTextNode ('C');
+      var textD = document.createTextNode ('D');
+      var textE = document.createTextNode ('E');
+      var textF = document.createTextNode ('F');
+      var textG = document.createTextNode ('G');
+      var textH = document.createTextNode ('H');
+      var textI = document.createTextNode ('I');
+      var textJ = document.createTextNode ('J');
+
+      var text1 = document.createTextNode ('1');
+      var text2 = document.createTextNode ('2');
+      var text3 = document.createTextNode ('3');
+      var text4 = document.createTextNode ('4');
+      var text5 = document.createTextNode ('5');
+      var text6 = document.createTextNode ('6');
+      var text7 = document.createTextNode ('7');
+      var text8 = document.createTextNode ('8');
+      var text9 = document.createTextNode ('9');
+      var text10 = document.createTextNode ('10');
+
+      squares[1].appendChild(textA);
+      squares[2].appendChild(textB);
+      squares[3].appendChild(textC);
+      squares[4].appendChild(textD);
+      squares[5].appendChild(textE);
+      squares[6].appendChild(textF);
+      squares[7].appendChild(textG);
+      squares[8].appendChild(textH);
+      squares[9].appendChild(textI);
+      squares[10].appendChild(textJ);
+
+      squares[11].appendChild(text1);
+      squares[22].appendChild(text2);
+      squares[33].appendChild(text3);
+      squares[44].appendChild(text4);
+      squares[55].appendChild(text5);
+      squares[66].appendChild(text6);
+      squares[77].appendChild(text7);
+      squares[88].appendChild(text8);
+      squares[99].appendChild(text9);
+      squares[110].appendChild(text10);
+    }
+
     //Create Board
     function createBoard(grid, squares) {
       for (let i = 0; i < width*width; i++) {
@@ -147,8 +207,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
     createBoard(userGrid, userSquares)
+
+    createBoardDisplay(userGridOverlay, userGridOverlaySquares)
+
     createBoard(computerGrid, computerSquares)
-  
+
+    createBoardDisplay(computerGridOverlay, computerGridOverlaySquares)
+    
+
     //Ships
     const shipArray = [
       {
@@ -451,6 +517,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       if (currentPlayer === 'enemy') {
         turnDisplay.innerHTML = 'Computers Go'
+        turnDisplay.hidden = false;
         setTimeout(enemyGo, 1000)
       }
     }
@@ -578,7 +645,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function gameOver() {
       isGameOver = true
       currentPlayer = 'None'
-      startButton.removeEventListener('click', startGame)
+      startButton.removeEventListener('click', resetGame)
       
     }
     startSinglePlayer()
