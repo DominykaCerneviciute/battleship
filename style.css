@@ -13,6 +13,8 @@ header {
   display: inline-block;
   width: 100%;
   margin-bottom: 1vh;
+  position: fixed;
+  top: 0;
 }
 
 .veryBig, .big, .medium, .small{
@@ -94,7 +96,8 @@ header .hidden-info button{
   display: flex;
   justify-content: center;
   height: 20px;
-  margin-top: 20px;
+  margin-top: 80px;
+  position: static;
 }
 
 .nickNames{
@@ -312,6 +315,7 @@ header .hidden-info button{
     background-color: hsl(200, 100%, 50%);
     grid-template-rows: repeat(10, 4.6vmin);
     grid-template-columns: repeat(10, 4.6vmin);
+    
   }
 
   .grid-computer > .boom {  background-color:red !important;
@@ -327,7 +331,7 @@ header .hidden-info button{
   
   .taken,
   .ship {
-    position: relative;
+    position: static;
     
   }
 
@@ -354,6 +358,7 @@ header .hidden-info button{
     #center{
       display: flex;
       justify-content: center;
+      position: static;
     }
 
 
@@ -434,7 +439,7 @@ header .hidden-info button{
 
   @media only screen and (max-width: 650px){
 
-    .grid-display{
+    .grid-display:hidden{
       height: 150px;
     }
 

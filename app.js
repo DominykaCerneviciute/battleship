@@ -30,6 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const messageBox = document.getElementById("messageBoard")
     const messageinput = document.getElementById("messageInput")
     const playButton = document.getElementById("playAgain")
+    const smallships = document.querySelector('.small')
+    const mediumships = document.querySelector('.medium')
+    const bigships = document.querySelector('.big')
+    const hugeships = document.querySelector('.veryBig')
     const userSquares = []
     const userGridOverlaySquares = []
     const computerGridOverlaySquares = []
@@ -158,16 +162,16 @@ document.addEventListener('DOMContentLoaded', () => {
       PCbig2Count = 0
       PChugeCount = 0
 
-      if(!displayGrid.contains(huge)) displayGrid.appendChild(huge);
-      if(!displayGrid.contains(big2)) displayGrid.insertBefore(big2, huge);
-      if(!displayGrid.contains(big1)) displayGrid.insertBefore(big1, big2);
-      if(!displayGrid.contains(mid3)) displayGrid.insertBefore(mid3, big1);
-      if(!displayGrid.contains(mid2)) displayGrid.insertBefore(mid2, mid3);
-      if(!displayGrid.contains(mid1)) displayGrid.insertBefore(mid1, mid2);
-      if(!displayGrid.contains(small4)) displayGrid.insertBefore(small4, mid1);
-      if(!displayGrid.contains(small3)) displayGrid.insertBefore(small3, small4);
-      if(!displayGrid.contains(small2)) displayGrid.insertBefore(small2, small3);
-      if(!displayGrid.contains(small1)) displayGrid.insertBefore(small1, displayGrid.firstChild);
+      if(!hugeships.contains(huge)) hugeships.appendChild(huge);
+      if(!bigships.contains(big2)) bigships.appendChild(big2);
+      if(!bigships.contains(big1)) bigships.insertBefore(big1, big2);
+      if(!mediumships.contains(mid3)) mediumships.appendChild(mid3);
+      if(!mediumships.contains(mid2)) mediumships.insertBefore(mid2, mid3);
+      if(!mediumships.contains(mid1)) mediumships.insertBefore(mid1, mid2);
+      if(!smallships.contains(small4)) smallships.appendChild(small4);
+      if(!smallships.contains(small3)) smallships.insertBefore(small3, small4);
+      if(!smallships.contains(small2)) smallships.insertBefore(small2, small3);
+      if(!smallships.contains(small1)) smallships.insertBefore(small1, smallships.firstChild);
 
       startSinglePlayer()
     }
@@ -524,18 +528,18 @@ document.addEventListener('DOMContentLoaded', () => {
         rotateButton.hidden = true;
       }
 
-      displayGrid.removeChild(draggedShip)
 
+      if(smallships.contains(draggedShip)){ smallships.removeChild(draggedShip)}
+      if(mediumships.contains(draggedShip)){mediumships.removeChild(draggedShip)}
+      if(bigships.contains(draggedShip)){bigships.removeChild(draggedShip)}
+      if(hugeships.contains(draggedShip)){ hugeships.removeChild(draggedShip)}
+     
     }
   
     function dragEnd() {
       // console.log('dragend')
     }
   
-    // function playerReady(num) {
-    //   let player = `.p${parseInt(num) + 1}`
-    //   document.querySelector(`${player} .ready span`).classList.toggle('green')
-    // }
 
     let small1Count = 0
     let small2Count = 0
