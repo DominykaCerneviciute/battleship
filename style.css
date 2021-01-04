@@ -15,6 +15,11 @@ header {
   margin-bottom: 1vh;
 }
 
+.veryBig, .big, .medium, .small{
+  display: flex;
+}
+
+
 header h2{
   margin-top: 0;
   padding-top: 5px;
@@ -98,7 +103,8 @@ header .hidden-info button{
 }
 
 #messageBoard{
-  width: 700px;
+  width: 60%;
+  min-width: 250px;
   background-color: white;
   height: 100px;
   overflow: auto;
@@ -135,7 +141,6 @@ header .hidden-info button{
 
 
 .grid-display{
-
   display: flex;
   justify-content: center;
   padding-top: 0px;
@@ -327,6 +332,116 @@ header .hidden-info button{
   }
 
   @media only screen and (max-width: 847px){
+    #msg{
+      width: auto;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column-reverse;
+      }
+    
+    #PcInfo{
+      margin-bottom: 10px;
+      }
+
+      .nickNames{
+        margin-top: 10px;
+        height: 50px;
+        width: 300px;
+      }
+
+    #center{
+      display: flex;
+      justify-content: center;
+    }
+
+
 
   }
   
+
+  @media only screen and (max-width: 800px){
+    .small1-container, .small2-container, .small3-container, .small4-container {
+      width: 22px;
+      height: 22px;
+    }
+    .small1-vertical, .small2-vertical, .small3-vertical, .small4-vertical {
+      width: 22px;
+      height: 22px;
+    }
+    
+    .mid1-container, .mid2-container, .mid3-container {
+      width: 44px;
+      height: 22px;
+    }
+    
+    .mid1-vertical, .mid2-vertical, .mid3-vertical {
+      width: 22px;
+      height: 44px;
+    }
+    
+    .big1-container, .big2-container {
+      width: 66px;
+      height: 22px;
+    }
+    
+    .big1-vertical, .big2-vertical {
+      width: 22px;
+      height: 66px;
+    }
+  
+    .huge-container {
+      width: 88px;
+      height: 22px;
+    }
+    
+    .huge-vertical {
+      width: 22px;
+      height: 88px;
+    }
+
+    .grid-user {
+      width: 240px;
+      height: 240px;
+    }
+    .grid-computer {
+      width: 240px;
+      height: 240px;
+    }
+
+
+    .grid-user-overlay{
+      width: 280px;
+      height: 270px;
+    }
+    .grid-computer-overlay{
+      width: 280px;
+      height: 270px;
+    }
+
+    .ship div {
+      width: 22px;
+      height: 22px;
+    }
+    
+    .grid div {
+      width: 22px;
+      height: 22px;
+    }
+    
+  }
+
+  @media only screen and (max-width: 650px){
+
+    .grid-display{
+      height: 150px;
+    }
+
+    .veryBig, .big, .medium, .small{
+      display: block;
+    }
+
+
+
+  }
