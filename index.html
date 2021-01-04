@@ -9,39 +9,49 @@
   </head>
   <body>
 
+    <header>
+      <h2>BattleShip</h2>
+      <div class="hidden-info">
+        <button id="reset">Reset game</button>
+      </div>
+    </header>
+
     <div class="userName">
       <label id ="labelForInput" for="UserName">Your name: </label>
       <input type="text" id="UserName" name="userName">
-      <input type="submit" id="submitButton" value="Submit"/>
-    </form>
-    
-    <div id="yourName"></div>
-
+      <input type="submit" id="submitButton" value="Submit"/>    
     </div>
-  
+    
+
+
+    <div class="someInfo">
+      <h3 id="whose-go" hidden = "true">Your Go</h3>
+      <h3 id="info"></h3>
+      <button id="playAgain" disabled="true" hidden="true">Play again</button>
+    </div>
+
     <div class="container">
-      <div class = "bb">
+      <div class="nickNames">
+        <div id="yourName"></div>
+        <h3 id="yourInfo"></h3>
+      </div>
+      <div class = "griddy">
         <div class="grid grid-user"></div>
         <div class="grid grid-user-overlay stack-top"></div>
       </div>
-      <div class = "bb">        
+      <div class = "griddy">        
         <div class="grid grid-computer"></div>
         <div class="grid grid-computer-overlay stack-top"></div>
       </div>
-
+      <div class="nickNames">
+        <div id="yourName">Computer</div>
+        <h3 id="PcInfo"></h3>
+      </div>
     </div>
 
     <div class="hidden-info">
-      <button id="start" disabled="true">Start Game</button>
       <button id="rotate">Rotate Your Ships</button>
-      <button id="reset">Reset game</button>
-      <h3 id="whose-go" hidden = "true">Your Go</h3>
-      <h3 id="info"></h3>
-    </div>
-
-    <div class="someInfo">
-      <h3 id="yourInfo"></h3>
-      <h3 id="PcInfo"></h3>
+      <button id="start" disabled="true" hidden="true">Start Game</button>
     </div>
 
     <div class="grid-display">
@@ -56,6 +66,18 @@
       <div class="ship big2-container" draggable="true"><div id="big2-0"></div><div id="big2-1"></div><div id="big2-2"></div></div>
       <div class="ship huge-container" draggable="true"><div id="huge-0"></div><div id="huge-1"></div><div id="huge-2"></div><div id="huge-3"></div></div>
     </div>
+
+    <div class="chatBox">
+      <div id="messageInput" hidden="true">
+        <input type="text" id="msg" name="message" placeholder="Type a message..."> 
+        <input type="submit" id="sendButton" value="Send" disabled="true">
+      </div>
+    </div>
+
+    <div id="chat">
+      <div id="messageBoard" hidden="true"></div>
+    </div>
+      
 
   </body>
 </html>

@@ -25,6 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const labelForName = document.querySelector('#labelForInput')
     const PcShipsInfo = document.querySelector('#PcInfo')
     const UserShipsInfo = document.querySelector('#yourInfo')
+    const sendButton = document.querySelector('#sendButton')
+    const yourMessage = document.querySelector('#msg')
+    const messageBox = document.getElementById("messageBoard")
+    const messageinput = document.getElementById("messageInput")
+    const playButton = document.getElementById("playAgain")
     const userSquares = []
     const userGridOverlaySquares = []
     const computerGridOverlaySquares = []
@@ -33,19 +38,43 @@ document.addEventListener('DOMContentLoaded', () => {
     let isGameOver = false
     let currentPlayer = 'None'
     const width = 10
-    let gameMode = ""
     var name = "";
-    let playerNum = 0
-    let ready = false
-    let enemyReady = false
-    let allShipsPlaced = false
     let shotFired = -1
     let numOfPcShipsLeft = 0;
     let numOfUserShipsLeft = 0;
- 
+  
+   
 
     submitButton.addEventListener('click', getInputValue);
     resetButton.addEventListener('click', resetGame);
+    sendButton.addEventListener('click', sendMessage);
+
+    function sendMessage(){
+
+      const one_message = document.createElement('div')
+      one_message.className = 'oneMessage'
+
+
+      messageBox.appendChild(one_message)
+
+      ms = name + ": " 
+      ms2 = yourMessage.value;
+      var message = document.createTextNode(ms);
+      var message2 = document.createTextNode(ms2);
+      const text = document.createElement('p')
+      const text2 = document.createElement('p')
+      text.className = 'textMessage';
+      text2.className = 'textMessage2';
+      text.appendChild(message);
+      text2.appendChild(message2);
+      one_message.appendChild(text)
+      one_message.appendChild(text2)
+
+      messageBox.insertBefore(one_message, messageBox.firstChild);;
+      msg.value = "";
+
+    }
+
 
     function getInputValue(){
       name = document.getElementById("UserName").value; 
@@ -55,6 +84,8 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.hidden = true;
         labelForName.hidden = true;
       if(numOfPcShipsLeft === 10 && numOfUserShipsLeft === 10){
+        rotateButton.hidden = true;
+        startButton.hidden = false;
         rotateButton.disabled = true;
         startButton.disabled = false;
       }
@@ -65,10 +96,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // }
 
  function resetGame(){
+      sendButton.disabled = true;
+      if(!isHorizontal) rotate();
       currentPlayer = 'None'
       isGameOver = false;
       numOfPcShipsLeft = 0;
       numOfUserShipsLeft = 0;
+
+      
+      var list = document.getElementById("messageBoard"); 
+      var k = list.childNodes.length;
+      while(k>0){
+        list.removeChild(list.childNodes[0]);
+        k--;
+      }
+
       for(var i=0; i<userSquares.length; i++){
         userSquares[i].className = 'square' ;
        }
@@ -76,7 +118,12 @@ document.addEventListener('DOMContentLoaded', () => {
          computerSquares[i].className = 'square' ;
        }
 
-       
+       rotateButton.hidden = false;
+       sendButton.disabled = true;
+       messageinput.hidden = true;
+       messageBox.hidden = true;
+       playButton.disabled = true;
+       playButton.hidden = true;
 
       name = "";
       document.getElementById("yourName").innerHTML = name;
@@ -127,7 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Single Player
     function startSinglePlayer() {
-      gameMode = "singlePlayer"
   
       generate(shipArray[9])
       generate(shipArray[8])
@@ -473,11 +519,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       else if(numOfUserShipsLeft === 10 && name !== ""){
         startButton.disabled = false;
+        startButton.hidden = false;
         rotateButton.disabled = true;
+        rotateButton.hidden = true;
       }
 
       displayGrid.removeChild(draggedShip)
-      if(!displayGrid.querySelector('.ship')) allShipsPlaced = true
+
     }
   
     function dragEnd() {
@@ -502,6 +550,11 @@ document.addEventListener('DOMContentLoaded', () => {
   
     // Game Logic for Single Player
     function startGame(){
+      sendButton.disabled = false;
+      messageinput.hidden = false;
+      messageBox.hidden = false;
+      rotateButton.hidden = true;
+      startButton.hidden = true;
       UserShipsInfo.innerHTML = 'You have ' + numOfUserShipsLeft + ' ships'
       PcShipsInfo.innerHTML = 'Computer has ' + numOfPcShipsLeft + ' ships'
       currentPlayer = 'user'
@@ -525,7 +578,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function revealSquare(classList) {
       const enemySquare = computerGrid.querySelector(`div[data-id='${shotFired}']`)
       const obj = Object.values(classList)
-      if (!enemySquare.classList.contains('boom') && currentPlayer === 'user' && !isGameOver) {
+      if (!enemySquare.classList.contains('boom') && currentPlayer === 'user' && !isGameOver && !enemySquare.classList.contains('miss')) {
         if (obj.includes('small1')) small1Count++
         if (obj.includes('small2')) small2Count++
         if (obj.includes('small3')) small3Count++
@@ -536,18 +589,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (obj.includes('big1')) big1Count++
         if (obj.includes('big2')) big2Count++
         if (obj.includes('huge')) hugeCount++
+
+        if (obj.includes('taken')) {
+          enemySquare.classList.add('boom')
+          infoDisplay.innerHTML = ``
+          currentPlayer = 'user'
+        } else {
+          enemySquare.classList.add('miss')
+          infoDisplay.innerHTML = ``
+          currentPlayer = 'enemy'
+        }
+        checkForWins()
+        playGameSingle()
       }
-      if (obj.includes('taken')) {
-        enemySquare.classList.add('boom')
-        infoDisplay.innerHTML = ``
-        currentPlayer = 'user'
-      } else {
-        enemySquare.classList.add('miss')
-        infoDisplay.innerHTML = ``
-        currentPlayer = 'enemy'
-      }
-      checkForWins()
-      if(gameMode === 'singlePlayer') playGameSingle()
+      
     }
   
 
@@ -563,7 +618,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let PChugeCount = 0
   
     function enemyGo(square) {
-      if (gameMode === 'singlePlayer') square = Math.floor(Math.random() * userSquares.length)
+      square = Math.floor(Math.random() * userSquares.length)
       if (!userSquares[square].classList.contains('boom') && !userSquares[square].classList.contains('miss')) {
         //userSquares[square].classList.add('boom')
 
@@ -582,7 +637,11 @@ document.addEventListener('DOMContentLoaded', () => {
           userSquares[square].classList.add('boom')
           currentPlayer = 'enemy'
           infoDisplay.innerHTML = ``
-          setTimeout(enemyGo, 1000)
+          checkForWins()
+          if(!isGameOver){
+            setTimeout(enemyGo, 1000)
+          }
+          
         } else {
           userSquares[square].classList.add('miss')
           currentPlayer = 'user'
@@ -592,7 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         checkForWins()
         //currentPlayer = 'enemy'
-      } else if (gameMode === 'singlePlayer') enemyGo()
+      } else enemyGo()
 
     }
   
@@ -600,7 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
       let enemy = 'computer'
       if (small1Count === 1 || small2Count === 1 || small3Count === 1 || small4Count === 1
        || mid1Count === 2 || mid2Count === 2 || mid3Count === 2 || big1Count === 3 || big2Count === 3 || hugeCount === 4) {
-        infoDisplay.innerHTML = `You sunk the ${enemy}'s ship`
+        infoDisplay.innerHTML = `You sunk ${enemy}'s ship`
         numOfPcShipsLeft--;
         PcShipsInfo.innerHTML = 'Computer has ' + numOfPcShipsLeft + ' ships left'
         if(small1Count === 1) small1Count = 10
@@ -616,7 +675,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       if (PCsmall1Count === 1 || PCsmall2Count === 1 || PCsmall3Count === 1 || PCsmall4Count === 1
-        || PCmid1Count === 2 || PCmid2Count === 2 || PCmid3Count === 2 || PCbig1Count === 3 || big2Count === 3 || PChugeCount === 4) {
+        || PCmid1Count === 2 || PCmid2Count === 2 || PCmid3Count === 2 || PCbig1Count === 3 || PCbig2Count === 3 || PChugeCount === 4) {
           infoDisplay.innerHTML = `${enemy} sunk your ship`
           numOfUserShipsLeft--;
           UserShipsInfo.innerHTML = 'You have ' + numOfUserShipsLeft + ' ships left'
@@ -633,18 +692,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
       if ((small1Count + small2Count + small3Count + small4Count + mid1Count + mid2Count + mid3Count + big1Count + big2Count + hugeCount) === 100) {
-        infoDisplay.innerHTML = "YOU WIN"
+        infoDisplay.innerHTML = name + " WON"
         gameOver()
       }
       if ((PCsmall1Count + PCsmall2Count + PCsmall3Count + PCsmall4Count + PCmid1Count + PCmid2Count + PCmid3Count + PCbig1Count + PCbig2Count + PChugeCount) === 100) {
-        infoDisplay.innerHTML = `${enemy.toUpperCase()} WINS`
+        infoDisplay.innerHTML = `${enemy.toUpperCase()} WON`
         gameOver()
       }
     }
   
     function gameOver() {
       isGameOver = true
-      currentPlayer = 'None'
+      turnDisplay.hidden = true;
+      playButton.disabled = false;
+      playButton.hidden = false;
+      playButton.addEventListener('click', resetGame)
       startButton.removeEventListener('click', resetGame)
       
     }

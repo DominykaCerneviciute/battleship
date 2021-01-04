@@ -1,18 +1,153 @@
+body{
+  background-color: #f2f2f2;
+  width: 100%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+}
+
+header {
+  background-color:  #B3CCFF !important;
+  color: white;
+  margin: 0px;
+  padding: 0px;
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 1vh;
+}
+
+header h2{
+  margin-top: 0;
+  padding-top: 5px;
+  padding-left: 20px;
+  height: 3vh;
+  float: left;
+}
+
+header .hidden-info{
+  float: right;
+  padding-right: 2vw;
+}
+
+#PcInfo, #yourInfo{
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.nickNames{
+  margin-top: 50px;
+  width: 250px;
+  height: 50px;
+  text-align: center;
+  display: block!important;
+}
+
+#yourName{
+  font-size: 20px;
+  font-family:'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
+header .hidden-info button{
+  margin-left: 10px;
+}
+
+.hidden-info{
+  margin-top: 1.5vh;
+}
+
+#whose-go{
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 20px;
+}
+
 .container {
   display: flex;
+  justify-content: center;
   }
 
-.bb{
+.griddy{
   display: flex;
+}
+
+#msg{
+  width: 300px;
+}
+
+#info{
+  color: red;
+}
+
+.oneMessage{
+  display: flex;
+}
+
+.textMessage{
+  color: red;
+}
+
+.userName{
+  display: flex;
+  justify-content: center;
+  height: 20px;
+  margin-top: 20px;
+}
+
+.nickNames{
+  display: flex;
+  justify-content: center;
+}
+
+#messageBoard{
+  width: 700px;
+  background-color: white;
+  height: 100px;
+  overflow: auto;
+  box-shadow: 0px 0px 5px 5px #d9d9d9;
+}
+
+#chat{
+  display: flex;
+  justify-content: center;
+}
+
+#submitButton, #start:enabled, #rotate:enabled, #reset, #sendButton:enabled{
+  cursor: pointer;
+}
+
+#messageInput{
+  text-align: center;
+  margin-bottom: 5px;
+}
+
+
+.someInfo{
+  height: 80px;
+  text-align: center;
+}
+
+.hidden-info{
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+
+
+
+.grid-display{
+
+  display: flex;
+  justify-content: center;
+  padding-top: 0px;
 }
   
   .grid-user {
-    width: 320px;
-    height: 320px;
+    width: 270px;
+    height: 270px;
     margin-top: 50px;
     margin-left: 50px;
     margin-right: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     display: flex;
     flex-wrap: wrap;
     background-color: #6699ff;
@@ -20,13 +155,19 @@
   }
   
   .grid div {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
+  }
+
+  p{
+    padding: 1px;
+    margin: 0;
+    margin-left: 5px;
   }
   
   .grid-computer {
-    width: 320px;
-    height: 320px;
+    width: 270px;
+    height: 270px;
     display: flex;
     flex-wrap: wrap;
     /* background-color: lightgreen; */
@@ -34,11 +175,11 @@
     margin-top: 50px;
     margin-left: 50px;
     margin-right: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   .grid-user-overlay{
-    width: 360px;
-    height: 350px; 
+    width: 310px;
+    height: 300px; 
     position: absolute;
     display: flex;
     flex-wrap: wrap;
@@ -47,8 +188,8 @@
     opacity: 0.8;  /* for demo purpose  */
   }
   .grid-computer-overlay{
-    width: 360px;
-    height: 350px; 
+    width: 310px;
+    height: 300px; 
     position: absolute;
     display: flex;
     flex-wrap: wrap;
@@ -56,53 +197,47 @@
     /* left: 395px; */
     opacity: 0.8;  /* for demo purpose  */
   }
-  .grid-display {
-    width: 400px;
-    height: 400px;
-    margin: 20px;
-    display: flex;
-    /*visibility: hidden;*/
-  }
+
   
   .small1-container, .small2-container, .small3-container, .small4-container {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     margin: 10px;
     display: flex;
   }
   .small1-vertical, .small2-vertical, .small3-vertical, .small4-vertical {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     margin: 10px;
     display: flex;
     flex-wrap: wrap;
   }
   
   .mid1-container, .mid2-container, .mid3-container {
-    width: 60px;
-    height: 30px;
+    width: 50px;
+    height: 25px;
     margin: 10px;
     display: flex;
   }
   
   .mid1-vertical, .mid2-vertical, .mid3-vertical {
-    width: 30px;
-    height: 60px;
+    width: 25px;
+    height: 50px;
     margin: 10px;
     display: flex;
     flex-wrap: wrap;
   }
   
   .big1-container, .big2-container {
-    width: 90px;
-    height: 30px;
+    width: 75px;
+    height: 25px;
     margin: 10px;
     display: flex;
   }
   
   .big1-vertical, .big2-vertical {
-    width: 30px;
-    height: 90px;
+    width: 25px;
+    height: 75px;
     margin: 10px;
     display: flex;
     flex-wrap: wrap;
@@ -114,15 +249,15 @@
 }
   
   .huge-container {
-    width: 120px;
-    height: 30px;
+    width: 100px;
+    height: 25px;
     margin: 10px;
     display: flex;
   }
   
   .huge-vertical {
-    width: 30px;
-    height: 120px;
+    width: 25px;
+    height: 100px;
     margin: 10px;
     display: flex;
     flex-wrap: wrap;
@@ -132,8 +267,8 @@
   
   
   .ship div {
-    width: 30px;
-    height: 30px;
+    width: 25px;
+    height: 25px;
     background-color:#737373;
   }
   
@@ -189,5 +324,9 @@
   .ship {
     position: relative;
     
+  }
+
+  @media only screen and (max-width: 847px){
+
   }
   
