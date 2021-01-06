@@ -335,16 +335,32 @@ header .hidden-info button{
     
   }
 
+  @media (max-height: 630px), (max-width:846px){
+
+
+  
+
+
+
+    .veryBig, .big, .medium, .small{
+      display: flex;
+      justify-self: center;
+    }
+
+
+    .container {
+      display: flex!important;
+      justify-content: center !important;
+      }
+
+  }
+
   @media only screen and (max-width: 847px){
     #msg{
       width: auto;
     }
 
-    .container {
-      display: flex;
-      flex-direction: column-reverse;
-      }
-    
+
     #PcInfo{
       margin-bottom: 10px;
       }
@@ -352,7 +368,7 @@ header .hidden-info button{
       .nickNames{
         margin-top: 10px;
         height: 50px;
-        width: 300px;
+        width: 100px;
       }
 
     #center{
@@ -361,12 +377,6 @@ header .hidden-info button{
       position: static;
     }
 
-
-
-  }
-  
-
-  @media only screen and (max-width: 800px){
     .small1-container, .small2-container, .small3-container, .small4-container {
       width: 22px;
       height: 22px;
@@ -435,6 +445,23 @@ header .hidden-info button{
       height: 22px;
     }
     
+
+  }
+  
+
+  @media only screen and (max-width: 823px){
+    .container {
+      display: flex;
+      flex-direction: column-reverse;
+      }
+    
+      .nickNames{
+        margin-top: 10px;
+        height: 50px;
+        width: 300px;
+      }
+
+    
   }
 
   @media only screen and (max-width: 650px){
@@ -447,6 +474,171 @@ header .hidden-info button{
       display: block;
     }
 
+    .small1-container, .small2-container, .small3-container, .small4-container {
+      width: 20px;
+      height: 20px;
+    }
+    .small1-vertical, .small2-vertical, .small3-vertical, .small4-vertical {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .mid1-container, .mid2-container, .mid3-container {
+      width: 40px;
+      height: 20px;
+    }
+    
+    .mid1-vertical, .mid2-vertical, .mid3-vertical {
+      width: 20px;
+      height: 40px;
+    }
+    
+    .big1-container, .big2-container {
+      width: 60px;
+      height: 20px;
+    }
+    
+    .big1-vertical, .big2-vertical {
+      width: 20px;
+      height: 60px;
+    }
+  
+    .huge-container {
+      width: 80px;
+      height: 20px;
+    }
+    
+    .huge-vertical {
+      width: 20px;
+      height: 80px;
+    }
 
+    .grid-user {
+      width: 220px;
+      height: 220px;
+    }
+    .grid-computer {
+      width: 220px;
+      height: 220px;
+    }
+
+
+    .grid-user-overlay{
+      width: 260px;
+      height: 250px;
+    }
+    .grid-computer-overlay{
+      width: 260px;
+      height: 250px;
+    }
+
+    .ship div {
+      width: 20px;
+      height: 20px;
+    }
+    
+    .grid div {
+      width: 20px;
+      height: 20px;
+    }
+
+    .someInfo{
+      display: flex;
+      justify-content: center;
+    }
+
+    .someInfo {
+      height: 25px;
+      text-align: center;
+  }
+
+  #whose-go{
+    margin-right: 10px;
+  }
+
+  }
+
+  @media only screen and (max-width: 500px){
+
+    .small1-container, .small2-container, .small3-container, .small4-container {
+      width: 17px;
+      height: 17px;
+    }
+    .small1-vertical, .small2-vertical, .small3-vertical, .small4-vertical {
+      width: 17px;
+      height: 17px;
+    }
+    
+    .mid1-container, .mid2-container, .mid3-container {
+      width: 34px;
+      height: 17px;
+    }
+    
+    .mid1-vertical, .mid2-vertical, .mid3-vertical {
+      width: 17px;
+      height: 34px;
+    }
+    
+    .big1-container, .big2-container {
+      width: 51px;
+      height: 17px;
+    }
+    
+    .big1-vertical, .big2-vertical {
+      width: 17px;
+      height: 51px;
+    }
+  
+    .huge-container {
+      width: 68px;
+      height: 17px;
+    }
+    
+    .huge-vertical {
+      width: 17px;
+      height: 68px;
+    }
+
+    .grid-user {
+      width: 190px;
+      height: 190px;
+    }
+    .grid-computer {
+      width: 190px;
+      height: 190px;
+    }
+
+
+    .grid-user-overlay{
+      width: 230px;
+      height: 220px;
+    }
+    .grid-computer-overlay{
+      width: 230px;
+      height: 220px;
+    }
+
+    .ship div {
+      width: 17px;
+      height: 17px;
+    }
+    
+    .grid div {
+      width: 17px;
+      height: 17px;
+    }
+
+  }
+
+
+  @media only screen and (max-width: 340px){
+    .someInfo{
+      display: block;
+    }
+
+    .someInfo {
+      height: 50px;
+      text-align: center;
+  }
 
   }
